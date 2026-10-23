@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eclipse Atelier | Our Circle</title>
+
+  <!-- Google Fonts: Cinzel for Brand Logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google Fonts: Inter & Hind Siliguri for clean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sage: {
+              50: '#f4f7f4',
+              100: '#e6ede6',
+              200: '#d1dfd1',
+              300: '#b2c8b2',
+              400: '#8ba98b',
+              500: '#678967',
+              600: '#517051',
+              700: '#415a41',
+              800: '#354835',
+              900: '#2b3b2b',
+            },
+            pastel: {
+              cream: '#fcfbf7',
+              mint: '#eef6f2',
+              rose: '#fdf2f2',
+              warm: '#fbf9f4'
+            }
+          },
+          fontFamily: {
+            sans: ['Hind Siliguri', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Sage Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e6ede6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #b2c8b2;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8ba98b;
+    }
+
+    /* Modal Fade Animation */
+    .modal-backdrop {
+      transition: opacity 0.25s ease-out;
+    }
+    .modal-box {
+      transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+    }
+
+    /* Tab Transition Effect */
+    .page-section {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .page-section.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Soft Sage Border Style */
+    .sage-border {
+      border: 1px solid #d1dfd1;
+    }
+  </style>
+</head>
+<body class="bg-[#e6ede6] text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
+
+  <!-- ================= HEADER / NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 bg-[#e6ede6]/90 backdrop-blur-md border-b border-sage-200 shadow-sm transition-all">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" onclick="switchTab('home')" class="flex items-center gap-3.5 group">
+        <div class="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+          3
+        </div>
+        <div>
+          <span style="font-family: 'Cinzel', serif;" class="text-2xl font-bold tracking-wider text-sage-900 block leading-none">Eclipse Atelier</span>
+          <span class="text-[11px] text-sage-600 font-semibold tracking-[0.2em] uppercase mt-1 block">OUR CIRCLE</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="hidden md:flex items-center gap-1 bg-sage-50/80 p-1.5 rounded-full border border-sage-200 shadow-inner">
+        <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-2 text-sm font-medium rounded-full transition-all text-sage-800 hover:text-sage-900">
+          <i class="fa-solid fa-house text-xs mr-1.5 opacity-70"></i>হোম
+        </button>
+        <button onclick="switchTab('members')" id="nav-members" class="nav-btn px-5 py-2 text-sm font-medium rounded-full transition-all text-sage-800 hover:text-sage-900">
+          <i class="fa-solid fa-users text-xs mr-1.5 opacity-70"></i>সদস্যবৃন্দ
+        </button>
+        <button onclick="switchTab('identity')" id="nav-identity" class="nav-btn px-5 py-2 text-sm font-medium rounded-full transition-all text-sage-800 hover:text-sage-900">
+          <i class="fa-solid fa-id-card text-xs mr-1.5 opacity-70"></i>আইডেন্টিটি
+        </button>
+        <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-5 py-2 text-sm font-medium rounded-full transition-all text-sage-800 hover:text-sage-900">
+          <i class="fa-solid fa-images text-xs mr-1.5 opacity-70"></i>গ্যালারি
+        </button>
+        <button onclick="switchTab('about')" id="nav-about" class="nav-btn px-5 py-2 text-sm font-medium rounded-full transition-all text-sage-800 hover:text-sage-900">
+          <i class="fa-solid fa-leaf text-xs mr-1.5 opacity-70"></i>আমাদের গল্প
+        </button>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl text-sage-800 hover:bg-sage-200/60 transition-colors focus:outline-none" aria-label="Toggle menu">
+        <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#e6ede6] border-b border-sage-200 px-4 pt-2 pb-6 space-y-2 shadow-lg">
+      <button onclick="switchTab('home'); toggleMobileMenu();" id="mob-nav-home" class="w-full text-left px-4 py-3 rounded-xl font-medium text-sage-900 hover:bg-sage-200/60 transition-colors flex items-center gap-3">
+        <i class="fa-solid fa-house w-5 text-sage-600"></i> হোম
+      </button>
+      <button onclick="switchTab('members'); toggleMobileMenu();" id="mob-nav-members" class="w-full text-left px-4 py-3 rounded-xl font-medium text-sage-900 hover:bg-sage-200/60 transition-colors flex items-center gap-3">
+        <i class="fa-solid fa-users w-5 text-sage-600"></i> সদস্যবৃন্দ
+      </button>
+      <button onclick="switchTab('identity'); toggleMobileMenu();" id="mob-nav-identity" class="w-full text-left px-4 py-3 rounded-xl font-medium text-sage-900 hover:bg-sage-200/60 transition-colors flex items-center gap-3">
+        <i class="fa-solid fa-id-card w-5 text-sage-600"></i> আইডেন্টিটি
+      </button>
+      <button onclick="switchTab('gallery'); toggleMobileMenu();" id="mob-nav-gallery" class="w-full text-left px-4 py-3 rounded-xl font-medium text-sage-900 hover:bg-sage-200/60 transition-colors flex items-center gap-3">
+        <i class="fa-solid fa-images w-5 text-sage-600"></i> গ্যালারি
+      </button>
+      <button onclick="switchTab('about'); toggleMobileMenu();" id="mob-nav-about" class="w-full text-left px-4 py-3 rounded-xl font-medium text-sage-900 hover:bg-sage-200/60 transition-colors flex items-center gap-3">
+        <i class="fa-solid fa-leaf w-5 text-sage-600"></i> আমাদের গল্প
+      </button>
+    </div>
+  </header>
+
+
+  <!-- ================= MAIN CONTENT AREA ================= -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+
+    <!-- 1. HOME SECTION -->
+    <section id="sec-home" class="page-section">
+      <!-- Hero Banner -->
+      <div class="text-center py-8 sm:py-12 max-w-3xl mx-auto">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sage-50 text-sage-800 text-xs font-semibold tracking-wide uppercase mb-6 border border-sage-200 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span> সুস্বাগতম
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-sage-900 leading-tight mb-6">
+          দিন বদলায়, শুধু বদলায় না আমাদের আড্ডা!
+        </h1>
+        <p class="text-base sm:text-lg text-sage-800 font-normal leading-relaxed mb-8">
+          তিনটা মাথা, হাজারটা আইডিয়া আর পাগলামির অন্যরকম এক দুনিয়া। এই জায়গায় আমাদের ভাইব্রেশন, হুল্লোড় আর জীবনের সেরা মুহূর্তগুলো ফ্রেমবন্দী হয়ে থাকল।
+        </p>
+        
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <button onclick="switchTab('members')" class="px-6 py-3 rounded-xl bg-sage-700 text-white font-medium text-sm hover:bg-sage-800 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+            বন্ধুদের পরিচিতি <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+          <button onclick="switchTab('gallery')" class="px-6 py-3 rounded-xl bg-sage-50 border border-sage-300 text-sage-800 font-medium text-sm hover:bg-white transition-all shadow-sm">
+            স্মৃতির গ্যালারি
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Group Picture Display -->
+      <div class="mt-6 mb-12">
+        <div class="relative rounded-3xl overflow-hidden shadow-lg sage-border bg-sage-100 group">
+          <img 
+            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80" 
+            alt="Group Photo" 
+            class="w-full h-[320px] sm:h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            onerror="this.src='https://placehold.co/1200x600/e6ede6/2b3b2b?text=Our+Group+Photo'"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-sage-900/80 via-sage-900/20 to-transparent flex items-end p-6 sm:p-10">
+            <div class="text-white">
+              <span class="text-xs uppercase tracking-widest text-sage-200 font-semibold">আমাদের সেরা মুহূর্ত</span>
+              <h3 class="text-xl sm:text-2xl font-bold mt-1">একত্রে কাটানো রঙিন দিনগুলি</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subgroup Overview / Highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
+        <div class="bg-sage-50 p-6 rounded-2xl sage-border shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-sage-200 text-sage-800 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <h3 class="text-lg font-bold text-sage-900 mb-2">অটুট বন্ধুত্ব</h3>
+          <p class="text-sm text-sage-700 leading-relaxed">
+            দুনিয়া উল্টে গেলেও আমাদের মাঝের বন্ডিং আর লয়্যালটি সবসময় এক থাকে। কথায় আছে না—"ভাইয়ে ভাইয়ে কামাই, বিপদে পাশে সবাই!"
+          </p>
+        </div>
+
+        <div class="bg-sage-50 p-6 rounded-2xl sage-border shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-sage-200 text-sage-800 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+          <h3 class="text-lg font-bold text-sage-900 mb-2">রোড ট্রিপ ও এক্সপ্লোর</h3>
+          <p class="text-sm text-sage-700 leading-relaxed">
+            নতুন রুট, বাইক রাইড কিংবা হুট করে কোথাও বেরিয়ে পড়া—যেখানেই যাই, জমিয়ে দেওয়া অ্যাডভেঞ্চারই আমাদের আসল পরিচয়।
+          </p>
+        </div>
+
+        <div class="bg-sage-50 p-6 rounded-2xl sage-border shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-sage-200 text-sage-800 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-mug-hot"></i>
+          </div>
+          <h3 class="text-lg font-bold text-sage-900 mb-2">অফুরন্ত আড্ডা</h3>
+          <p class="text-sm text-sage-700 leading-relaxed">
+            কোনো ফিল্টার ছাড়াই ঘণ্টার পর ঘণ্টা চলা আড্ডা, রড রোস্টিং আর ভবিষ্যৎ নিয়ে সিরিয়াস-ননসিরিয়াস সব আলোচনা।
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 2. MEMBERS SECTION (Updated for 3 Members) -->
+    <section id="sec-members" class="page-section">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-2xl sm:text-4xl font-bold text-sage-900">আমাদের তিন বন্ধু</h2>
+        <p class="text-sage-700 mt-2 text-sm sm:text-base">আমাদের দলের তিনজন বিশেষ মানুষ, যাদের প্রত্যেকের রয়েছে নিজস্ব ব্যক্তিত্ব</p>
+      </div>
+
+      <!-- 3 Members Grid (Balanced Layout) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Member Card 1 -->
+        <div class="bg-sage-50 rounded-2xl p-5 sage-border shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative mb-4 overflow-hidden rounded-xl bg-sage-100 aspect-square border border-sage-200">
+              <img src="Nihal_Ahmed.png" alt="নিহাল আহমেদ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/e6ede6/2b3b2b?text=Profile'">
+              <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-sage-800 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                The Strategist
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-sage-900 group-hover:text-sage-700 transition-colors">নিহাল আহমেদ</h3>
+            <p class="text-xs font-semibold text-sage-600 mb-2">প্ল্যানার ও চিন্তাবিদ</p>
+            <p class="text-xs text-sage-700 line-clamp-2 leading-relaxed">
+              যেকোনো ভ্রমণের তারিখ ঠিক করা থেকে শুরু করে গ্রুপের কঠিন সিদ্ধান্তগুলো ধীরচিন্তায় সমাধান করতে পারদর্শী।
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-sage-200 flex justify-end">
+            <button onclick="openProfileModal('m1')" class="text-xs font-bold text-sage-700 hover:text-sage-900 flex items-center gap-1 group/btn transition-colors">
+              Learn More <i class="fa-solid fa-chevron-right text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Member Card 2 -->
+        <div class="bg-sage-50 rounded-2xl p-5 sage-border shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative mb-4 overflow-hidden rounded-xl bg-sage-100 aspect-square border border-sage-200">
+              <img src="Bayezied.jpeg" alt="বাইজিদ ইসলাম" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/e6ede6/2b3b2b?text=Profile'">
+              <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-sage-800 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                The Creative
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-sage-900 group-hover:text-sage-700 transition-colors">বাইজিদ ইসলাম</h3>
+            <p class="text-xs font-semibold text-sage-600 mb-2">ফটোগ্রাফার ও ডিজাইনার</p>
+            <p class="text-xs text-sage-700 line-clamp-2 leading-relaxed">
+              সুন্দর মুহূর্ত ফ্রেমবন্দি করা আর নান্দনিক বিষয় নিয়ে কাজ করতে ভালোবাসে
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-sage-200 flex justify-end">
+            <button onclick="openProfileModal('m2')" class="text-xs font-bold text-sage-700 hover:text-sage-900 flex items-center gap-1 group/btn transition-colors">
+              Learn More <i class="fa-solid fa-chevron-right text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Member Card 3 -->
+        <div class="bg-sage-50 rounded-2xl p-5 sage-border shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative mb-4 overflow-hidden rounded-xl bg-sage-100 aspect-square border border-sage-200">
+              <img src="Shadhin.jpeg" alt="সাফিউল আলম স্বাধীন" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/e6ede6/2b3b2b?text=Profile'">
+              <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-sage-800 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                The Scholar
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-sage-900 group-hover:text-sage-700 transition-colors">সাফিউল আলম স্বাধীন</h3>
+            <p class="text-xs font-semibold text-sage-600 mb-2">প্রযুক্তি ও পড়াশোনা</p>
+            <p class="text-xs text-sage-700 line-clamp-2 leading-relaxed">
+              সততা ও নৈতিকতায় অটল, সর্বদা সত্যের পথে অনর এবং অন্যায়ের বিরুদ্ধে দৃঢ় থেকে দৃঢ় ও কঠোর
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-sage-200 flex justify-end">
+            <button onclick="openProfileModal('m3')" class="text-xs font-bold text-sage-700 hover:text-sage-900 flex items-center gap-1 group/btn transition-colors">
+              Learn More <i class="fa-solid fa-chevron-right text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 3. IDENTITY SECTION (Updated for 3 Members) -->
+    <section id="sec-identity" class="page-section">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl sm:text-4xl font-bold text-sage-900">আইডেন্টিটি (Identity)</h2>
+          <p class="text-sage-700 mt-2 text-sm sm:text-base">আমাদের তিন বন্ধুর নিজস্ব আইডি কার্ডের পিডিএফ সংগ্রহশালা</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Member 1 ID Box -->
+          <div class="bg-sage-50 p-4 sm:p-5 rounded-[20px] sage-border shadow-sm flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <img src="Nihal_Ahmed.png" alt="নিহাল আহমেদ" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-sage-300 flex-shrink-0" onerror="this.src='https://placehold.co/200x200/e6ede6/2b3b2b?text=ID'">
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-sage-900">নিহাল আহমেদ</h3>
+                <p class="text-xs text-sage-600">নিজস্ব আইডি কার্ড ও নথিপত্র</p>
+              </div>
+            </div>
+            <a href="pdf/member1-id.pdf" target="_blank" class="px-4 sm:px-5 py-2.5 rounded-xl bg-sage-700 hover:bg-sage-800 text-white font-medium text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-file-pdf"></i> আইডি কার্ড (PDF)
+            </a>
+          </div>
+
+          <!-- Member 2 ID Box -->
+          <div class="bg-sage-50 p-4 sm:p-5 rounded-[20px] sage-border shadow-sm flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <img src="Bayezied.jpeg" alt="বাইজিদ ইসলাম" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-sage-300 flex-shrink-0" onerror="this.src='https://placehold.co/200x200/e6ede6/2b3b2b?text=ID'">
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-sage-900">বাইজিদ ইসলাম</h3>
+                <p class="text-xs text-sage-600">নিজস্ব আইডি কার্ড ও নথিপত্র</p>
+              </div>
+            </div>
+            <a href="pdf/member2-id.pdf" target="_blank" class="px-4 sm:px-5 py-2.5 rounded-xl bg-sage-700 hover:bg-sage-800 text-white font-medium text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-file-pdf"></i> আইডি কার্ড (PDF)
+            </a>
+          </div>
+
+          <!-- Member 3 ID Box -->
+          <div class="bg-sage-50 p-4 sm:p-5 rounded-[20px] sage-border shadow-sm flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <img src="Shadhin.jpeg" alt="সাফিউল আলম স্বাধীন" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-sage-300 flex-shrink-0" onerror="this.src='https://placehold.co/200x200/e6ede6/2b3b2b?text=ID'">
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-sage-900">সাফিউল আলম স্বাধীন</h3>
+                <p class="text-xs text-sage-600">নিজস্ব আইডি কার্ড ও নথিপত্র</p>
+              </div>
+            </div>
+            <a href="pdf/member3-id.pdf" target="_blank" class="px-4 sm:px-5 py-2.5 rounded-xl bg-sage-700 hover:bg-sage-800 text-white font-medium text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-file-pdf"></i> আইডি কার্ড (PDF)
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 4. GALLERY SECTION -->
+    <section id="sec-gallery" class="page-section">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-4xl font-bold text-sage-900">স্মৃতির অ্যালবামে আমরা</h2>
+        <p class="text-sage-700 mt-2 text-sm sm:text-base">আমাদের কাটানো সুন্দর সময় ও ভ্রমণের স্থিরচিত্রসমূহ</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Gallery Item 1 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80" alt="Memory 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                বিকেলের চা ও আড্ডা
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">ক্যাম্পাসের প্রিয় ক্যাফেটেরিয়া</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ১৫ অক্টোবর, ২০২৫</p>
+          </div>
+        </div>
+
+        <!-- Gallery Item 2 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="Memory 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                পাহাড়ি ট্রেইল ভ্রমণ
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">বান্দরবান নাইট ক্যাম্পিং</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ২০ জানুয়ারি, ২০২৬</p>
+          </div>
+        </div>
+
+        <!-- Gallery Item 3 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Memory 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                বার্ষিক উদযাপন
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">গেট-টুগেদার ও বার্বিকিউ নাইট</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ৩১ ডিসেম্বর, ২০২৫</p>
+          </div>
+        </div>
+
+        <!-- Gallery Item 4 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1539635273304-0e8723e0af91?auto=format&fit=crop&w=800&q=80" alt="Memory 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                সমুদ্রের পাড়ে সূর্যাস্ত
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">কক্সবাজার রোড ট্রিপ</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ১২ ফেব্রুয়ারি, ২০২৬</p>
+          </div>
+        </div>
+
+        <!-- Gallery Item 5 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80" alt="Memory 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                জমে ওঠা গান-বাজনা
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">ছাদের ওপর গিটার আর গান</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ০৫ মার্চ, ২০২৬</p>
+          </div>
+        </div>
+
+        <!-- Gallery Item 6 -->
+        <div class="bg-sage-50 rounded-2xl overflow-hidden sage-border shadow-sm group">
+          <div class="relative overflow-hidden aspect-[4/3] bg-sage-100">
+            <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80" alt="Memory 6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/e6ede6/2b3b2b?text=Gallery+Image'">
+            <div class="absolute inset-0 bg-sage-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-semibold border border-white/60 px-4 py-2 rounded-full backdrop-blur-sm">
+                পরীক্ষার শেষের আনন্দ
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-sage-900">সেমিস্টার ব্রেক সেলিব্রেশন</p>
+            <p class="text-xs text-sage-600 mt-1"><i class="fa-regular fa-calendar text-[10px] mr-1"></i> ১৮ মে, ২০২৬</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 5. ABOUT SECTION -->
+    <section id="sec-about" class="page-section">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl sm:text-4xl font-bold text-sage-900">আমাদের বন্ধুত্বের গল্প</h2>
+          <p class="text-sage-700 mt-2 text-sm sm:text-base">কীভাবে শুরু হয়েছিল আমাদের তিনজনের ভালোবাসার পথচলা</p>
+        </div>
+
+        <div class="bg-sage-50 rounded-3xl p-6 sm:p-10 sage-border shadow-sm space-y-6">
+          <div class="flex items-center gap-4 border-b border-sage-200 pb-6">
+            <div class="w-14 h-14 rounded-2xl bg-sage-200 text-sage-800 flex items-center justify-center text-2xl flex-shrink-0">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-sage-900">বন্ধুর সাথে পথচলা</h3>
+              <p class="text-xs text-sage-600">"একটি বিশ্বস্ত হাত ও একজন খাঁটি বন্ধু জীবনের সবচেয়ে বড় উপহার।"</p>
+            </div>
+          </div>
+
+          <div class="prose prose-slate text-sm sm:text-base leading-relaxed text-sage-800 space-y-4">
+            <p>
+              আমাদের বন্ধুত্বের সূচনা হয়েছিল খুবই চমকপ্রদ পদ্ধতিতে। প্রথমে বন্ধুত্ব হয় নিহালের সাথে বাইজিদের। তারপর বাইজিদের সাথে বন্ধুত্ব হয় স্বাধীনের। সেখান থেকে বাইজিদের মাধ্যমে স্বাধীন ও নিহাল পরস্পরের বন্ধু হয়। এভাবেই আমাদের মধ্যে বন্ধুসুলভ সার্কেল তৈরি হয়।
+            </p>
+            <p>
+              সময়ের সাথে সাথে আমাদের পড়াশোনা, ক্যারিয়ার ও জীবনের অগ্রাধিকার বদলালেও আমাদের বন্ধন থেকে গেছে একই রকম সহজ ও মার্জিত। আমরা বিশ্বাস করি, সত্যিকারের বন্ধুত্বে প্রতিদিন কথা বলার প্রয়োজন হয় না; প্রয়োজনে পাশে থাকা আর পারস্পরিক শ্রদ্ধাবোধই হলো আসল শক্তি।
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-sage-200">
+            <div class="p-4 rounded-xl bg-sage-100/60 text-center border border-sage-200">
+              <span class="block text-2xl font-bold text-sage-900">৪+</span>
+              <span class="text-xs text-sage-600 mt-0.5 block">বছরের সম্পর্ক</span>
+            </div>
+            <div class="p-4 rounded-xl bg-sage-100/60 text-center border border-sage-200">
+              <span class="block text-2xl font-bold text-sage-900">১২+</span>
+              <span class="text-xs text-sage-600 mt-0.5 block">সফল ট্যুর ও ট্রিপ</span>
+            </div>
+            <div class="p-4 rounded-xl bg-sage-100/60 text-center border border-sage-200">
+              <span class="block text-2xl font-bold text-sage-900">∞</span>
+              <span class="text-xs text-sage-600 mt-0.5 block">অফুরন্ত হাসি ও স্মৃতি</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= MEMBER FULL PROFILE MODAL ================= -->
+  <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <!-- Backdrop Overlay -->
+    <div onclick="closeProfileModal()" class="modal-backdrop fixed inset-0 bg-sage-900/60 backdrop-blur-sm"></div>
+
+    <!-- Modal Card Box -->
+    <div class="modal-box relative bg-sage-50 w-full max-w-xl rounded-3xl shadow-2xl border border-sage-200 overflow-hidden z-10 my-8">
+      
+      <!-- Close Button -->
+      <button onclick="closeProfileModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-sage-200 hover:bg-sage-300 text-sage-800 flex items-center justify-center transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Modal Header Banner -->
+      <div class="p-6 sm:p-8 bg-gradient-to-r from-sage-800 to-sage-900 text-white flex items-center gap-5">
+        <img id="m-photo" src="" alt="Member" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-sage-300 shadow-lg flex-shrink-0">
+        <div>
+          <span id="m-role" class="text-[11px] font-bold uppercase tracking-wider text-sage-100 bg-sage-700/80 border border-sage-500 px-2.5 py-0.5 rounded-full inline-block mb-1">Role</span>
+          <h3 id="m-name" class="text-xl sm:text-2xl font-bold leading-tight text-white">Member Name</h3>
+          <p id="m-tag" class="text-xs text-sage-200 mt-1">Short Tagline</p>
+        </div>
+      </div>
+
+      <!-- Modal Tabs inside -->
+      <div class="border-b border-sage-200 bg-sage-100/70 px-6 flex gap-6 text-sm font-medium">
+        <button onclick="switchModalSubTab('personal')" id="mtab-personal" class="py-3 border-b-2 text-sage-800 border-sage-700 font-bold transition-all">
+          ব্যক্তিগত তথ্য
+        </button>
+        <button onclick="switchModalSubTab('academic')" id="mtab-academic" class="py-3 border-b-2 text-sage-600 border-transparent hover:text-sage-900 transition-all">
+          শিক্ষাগত তথ্য
+        </button>
+        <button onclick="switchModalSubTab('social')" id="mtab-social" class="py-3 border-b-2 text-sage-600 border-transparent hover:text-sage-900 transition-all">
+          সোশ্যাল মিডিয়া
+        </button>
+      </div>
+
+      <!-- Modal Content Body -->
+      <div class="p-6 sm:p-8 min-h-[220px]">
+        
+        <!-- Personal Tab Content -->
+        <div id="mcontent-personal" class="modal-subcontent space-y-4 text-sm text-sage-800">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white p-3 rounded-xl border border-sage-200">
+              <span class="block text-[11px] uppercase tracking-wider text-sage-500 font-bold mb-1">ডাকনাম</span>
+              <span id="m-nickname" class="font-semibold text-sage-900">--</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-sage-200">
+              <span class="block text-[11px] uppercase tracking-wider text-sage-500 font-bold mb-1">পছন্দের শখ</span>
+              <span id="m-hobby" class="font-semibold text-sage-900">--</span>
+            </div>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl border border-sage-200">
+            <span class="block text-[11px] uppercase tracking-wider text-sage-500 font-bold mb-1">সংক্ষিপ্ত জীবনদর্শন</span>
+            <p id="m-bio" class="text-sage-800 leading-relaxed">--</p>
+          </div>
+        </div>
+
+        <!-- Academic Tab Content -->
+        <div id="mcontent-academic" class="modal-subcontent hidden space-y-4 text-sm text-sage-800">
+          <div class="bg-white p-3.5 rounded-xl border border-sage-200 space-y-3">
+            <div>
+              <span class="block text-[11px] uppercase tracking-wider text-sage-500 font-bold">School</span>
+              <span id="m-school" class="font-semibold text-sage-900">--</span>
+            </div>
+            <div class="pt-2 border-t border-sage-200">
+              <span class="block text-[11px] uppercase tracking-wider text-sage-500 font-bold">College</span>
+              <span id="m-college" class="font-semibold text-sage-900">--</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Tab Content -->
+        <div id="mcontent-social" class="modal-subcontent hidden space-y-3">
+          <p class="text-xs text-sage-600 mb-2">সোশ্যাল মিডিয়ায় যুক্ত থাকুন:</p>
+          <div class="flex flex-col gap-2.5">
+            <a id="m-fb" href="#" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white text-sage-900 hover:bg-sage-100 transition-colors font-medium text-sm border border-sage-200">
+              <i class="fa-brands fa-facebook text-lg text-sage-700"></i> Facebook Profile
+            </a>
+            <a id="m-insta" href="#" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white text-sage-900 hover:bg-sage-100 transition-colors font-medium text-sm border border-sage-200">
+              <i class="fa-brands fa-instagram text-lg text-sage-700"></i> Instagram Handle
+            </a>
+            <a id="m-wa" href="#" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white text-sage-900 hover:bg-sage-100 transition-colors font-medium text-sm border border-sage-200">
+              <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i> WhatsApp
+            </a>
+            <a id="m-tg" href="#" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white text-sage-900 hover:bg-sage-100 transition-colors font-medium text-sm border border-sage-200">
+              <i class="fa-brands fa-telegram text-lg text-sky-600"></i> Telegram
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 bg-sage-100/60 border-t border-sage-200 text-right">
+        <button onclick="closeProfileModal()" class="px-5 py-2 rounded-xl bg-sage-200 hover:bg-sage-300 text-sage-900 text-xs font-bold transition-colors">
+          বন্ধ করুন
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#e6ede6] border-t border-sage-200/80 py-8 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-sage-600">
+      <p class="mb-2">Our Friends Circle's own website, created with memories and love</p>
+      <p>&copy; 2026 Our Friends Circle. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Member Comprehensive Data Structure (3 Members)
+    const membersData = {
+      m1: {
+        name: "নিহাল আহমেদ",
+        role: "The Strategist",
+        tag: "পরিকল্পনাকারী ও অপ্রতিরোধ্য",
+        photo: "Nihal_Ahmed.png",
+        nickname: "নিহাল",
+        hobby: "সমস্যা বিশ্লেষণ ও ভ্রমণ পরিকল্পনা",
+        bio: "সামনে আর এগোনো যাবে না’—এই কথাটাই আমাকে সবচেয়ে বেশি টানে। যেখানে সবাই থেমে যায়, আমি সেখানে থামার কারণ খুঁজে বের করি এবং সেই বাধাকে চূর্ণ করে নতুন পথ তৈরি করি। যেকোনো নেগেটিভ বা অসম্ভব পরিস্থিতিকে নিজের অনুকূলে নিয়ে আসাই আমার মূল শক্তি",
+        school: "এম ই এইচ আরিফ কলেজ (মাধ্যমিক)",
+        college: "এম ই এইচ আরিফ কলেজ",
+        fb: "https://www.facebook.com/nl.nihal.ahmed",
+        insta: "https://www.instagram.com/nl_nihal_36o/",
+        whatsapp: "https://wa.me/8801615827949",
+        telegram: "https://t.me/nlnihal"
+      },
+      m2: {
+        name: "বাইজিদ ইসলাম",
+        role: "The Artovian",
+        tag: "ফটোগ্রাফার ও ভিজ্যুয়াল ডিজাইনার",
+        photo: "Bayezied.jpeg",
+        nickname: "বাইজিদ",
+        hobby: "অনন্য নকশা এবং ভ্রমণ",
+        bio: "আমি একজন সৃজনশীল গ্রাফিক ডিজাইনার, যিনি নতুন আইডিয়া তৈরি, ভিজ্যুয়াল ডিজাইন এবং পরিকল্পনাকে আকর্ষণীয় ও কার্যকর রূপ দিতে ভালোবাসি",
+        school: "মৌচাক আইডিয়াল পাবলিক স্কুল",
+        college: "কোনাবাড়ি ডিগ্ৰী কলেজ ও বিশ্ববিদ্যালয়",
+        fb: "https://www.facebook.com/bayezied.islam.2025",
+        insta: "https://www.instagram.com/islambayezied/",
+        whatsapp: "https://wa.me/8801855321886",
+        telegram: "https://t.me/Bayeziedislam"
+      },
+      m3: {
+        name: "সাফিউল আলম স্বাধীন",
+        role: "The Strategist",
+        tag: "পরিকল্পনাকারী ও রহস্যময়",
+        photo: "Shadhin.jpeg",
+        nickname: "স্বাধীন",
+        hobby: "ভ্রমণ ও খেলাধুলা",
+        bio: "As a man , money and self respect is the First priority . সততা ও নৈতিকতাকে ভিত্তি করে নির্দিষ্ট লক্ষ্যের দিকে এগিয়ে যাওয়া, প্রতিকূলতায় ধৈর্য ধরে প্রতিনিয়ত নতুন কিছু শেখা এবং নিজের উন্নয়নের পাশাপাশি মানবসেবা করা। Remember Nothing is impossible. If you have a 1% chance, then fight",
+        school: "আলহাজ্ব সমসের উদ্দিন উচ্চ বিদ্যালয়",
+        college: "কালিয়াকৈর সরকারি কলেজ",
+        fb: "https://www.facebook.com/mdshafiul.shadhin",
+        insta: "https://www.instagram.com/sn_shadhin_36o/",
+        whatsapp: "https://wa.me/8801304127062",
+        telegram: "https://t.me//sn_sadhin"
+      }
+    };
+
+    // Tab Switching Functionality
+    function switchTab(tabId) {
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+
+      const navBtns = document.querySelectorAll('.nav-btn');
+      navBtns.forEach(btn => {
+        btn.classList.remove('bg-sage-700', 'text-white', 'shadow-sm', 'font-bold');
+        btn.classList.add('text-sage-800');
+      });
+
+      const activeSection = document.getElementById('sec-' + tabId);
+      if (activeSection) {
+        activeSection.classList.add('active');
+      }
+
+      const activeNavBtn = document.getElementById('nav-' + tabId);
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('bg-sage-700', 'text-white', 'shadow-sm', 'font-bold');
+        activeNavBtn.classList.remove('text-sage-800');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mobile Navigation Drawer Toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const icon = document.getElementById('menu-icon');
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-xmark');
+      } else {
+        menu.classList.add('hidden');
+        icon.classList.remove('fa-xmark');
+        icon.classList.add('fa-bars');
+      }
+    }
+
+    // Modal Dynamic Populating & Controls
+    function openProfileModal(memberId) {
+      const data = membersData[memberId];
+      if (!data) return;
+
+      document.getElementById('m-photo').src = data.photo;
+      document.getElementById('m-role').textContent = data.role;
+      document.getElementById('m-name').textContent = data.name;
+      document.getElementById('m-tag').textContent = data.tag;
+      document.getElementById('m-nickname').textContent = data.nickname;
+      document.getElementById('m-hobby').textContent = data.hobby;
+      document.getElementById('m-bio').textContent = data.bio;
+      document.getElementById('m-school').textContent = data.school;
+      document.getElementById('m-college').textContent = data.college;
+
+      document.getElementById('m-fb').href = data.fb;
+      document.getElementById('m-insta').href = data.insta;
+      document.getElementById('m-wa').href = data.whatsapp;
+      document.getElementById('m-tg').href = data.telegram;
+
+      switchModalSubTab('personal');
+
+      const modal = document.getElementById('profile-modal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('profile-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function switchModalSubTab(subTab) {
+      const subContents = document.querySelectorAll('.modal-subcontent');
+      subContents.forEach(c => c.classList.add('hidden'));
+
+      ['personal', 'academic', 'social'].forEach(t => {
+        const btn = document.getElementById('mtab-' + t);
+        if (btn) {
+          btn.classList.remove('text-sage-800', 'border-sage-700', 'font-bold');
+          btn.classList.add('text-sage-600', 'border-transparent');
+        }
+      });
+
+      const activeContent = document.getElementById('mcontent-' + subTab);
+      if (activeContent) activeContent.classList.remove('hidden');
+
+      const activeTabBtn = document.getElementById('mtab-' + subTab);
+      if (activeTabBtn) {
+        activeTabBtn.classList.add('text-sage-800', 'border-sage-700', 'font-bold');
+        activeTabBtn.classList.remove('text-sage-600', 'border-transparent');
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeProfileModal();
+      }
+    });
+
+    // Initialize Default View on Page Load
+    window.addEventListener('DOMContentLoaded', () => {
+      switchTab('home');
+    });
+  </script>
+</body>
+</html>
